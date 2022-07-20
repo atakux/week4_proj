@@ -18,18 +18,13 @@
                 - allow user to set long term goals besides regular habits ?
 """
 
+import sqlite3
 from registration import RegistrationForm
-from flask import Flask, render_template, url_for, flash, redirect
+from flask import Flask, render_template, url_for, flash, redirect, g, request, session
 from flask_behind_proxy import FlaskBehindProxy
 from flask_sqlalchemy import SQLAlchemy
 
-app = Flask(__name__)
 
-proxied = FlaskBehindProxy(app)
-app.config['SECRET_KEY'] = 'd821716fe32cfc57665bae47fc2d5dd3'
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///profiles.db'
-db = SQLAlchemy(app)
 
 
 class User(db.Model):
@@ -42,9 +37,6 @@ class User(db.Model):
         return f"User('{self.username}', '{self.email}')"
 
 
-@app.route("/")
-def home():
-    return render_template('home.html', subtitle='Home', text='this the home page')
 
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -59,6 +51,34 @@ def register():
         flash(f'Digital Bullet Journal account created for {form.username.data}!!', 'success')
         return redirect(url_for('home'))
     return render_template('register.html', title='Sign Up', form=form)
+
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+        error = None
+        conn = sqlite3.connect("/var/www/flask/profiles.db")
+        en = conn.cursor()
+        user = en.execute(
+            "SELECT * FROM user WHERE username = ?", (username,)
+        ).fetchone()
+
+        if user is None:
+            error = "Incorrect username."
+        elif user["password"] != password:
+            error = "Incorrect password."
+
+        if error is None:
+            # store the user id in a new session and return to the index
+            session.clear()
+            session["user_id"] = user["id"]
+            return redirect(url_for("index"))
+
+        flash(error)
+
+    return render_template("login.html")
 
 
 if __name__ == '__main__':
