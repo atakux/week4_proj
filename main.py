@@ -81,6 +81,12 @@ def register():
     return render_template('register.html', title='Sign Up', form=form)
 
 
+@app.route("/login")
+def login():
+    return render_template('login.html')
+
+
+
 if __name__ == '__main__':
     db.create_all()
     app.run(debug=True, host='0.0.0.0')
