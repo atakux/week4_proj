@@ -94,7 +94,10 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         actual_user = User.query.filter_by(username=form.username.data).first()
-        if actual_user.get_username() == form.username.data and \
+
+        if actual_user is None:
+            flash("incorrect username or password", 'failure')
+        elif actual_user.get_username() == form.username.data and \
                 actual_user.get_password() == form.password.data:
             flash(f"welcome {actual_user.get_username()}!", 'success')
             return render_template('profile.html')
