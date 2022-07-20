@@ -43,6 +43,12 @@ class User(db.Model):
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"
 
+    def get_username(self):
+        return self.username
+
+    def get_password(self):
+        return self.password
+
 
 @app.route("/")
 def home():
@@ -87,8 +93,10 @@ def register():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        if form.username.data in session:
-            flash(f"welcome {form.username.data}!", 'success')
+        actual_user = User.query.filter_by(username=form.username.data).first()
+        if actual_user.get_username() == form.username.data and \
+                actual_user.get_password() == form.password.data:
+            flash(f"welcome {actual_user.get_username()}!", 'success')
             return render_template('profile.html')
         else:
             flash("incorrect username or password", 'failure')
