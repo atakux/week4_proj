@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Digital Bullet Journal</title>
+    </head>
+
+    <body>
+		<nav>
+			<!--TODO make Calendar, Habits, Moods, Journals pages and substitute here-->
+			<h1><a href="{{ url_for('home') }}">Digital Bullet Journal :D</a></h1>
+			<li><a href="{{ url_for('calendar') }}">Calendar</a></li>
+			<li><a href="{{ url_for('habits') }}">Habits</a></li>
+			<li><a href="{{ url_for('moods') }}">Moods</a></li>
+			<li><a href="{{ url_for('journal') }}">Journals</a></li>
+		</nav>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %} {% endblock %}
+    </body>
+</html>
