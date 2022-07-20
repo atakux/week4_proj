@@ -5,7 +5,14 @@
     </head>
 
     <body>
-        <h1>Digital Bullet Journal :D</h1>
+		<nav>
+			<!--TODO make Calendar, Habits, Moods, Journals pages and substitute here-->
+			<h1><a href="{{ url_for('home') }}">Digital Bullet Journal :D</a></h1>
+			<li><a href="{{ url_for('calendar') }}">Calendar</a></li>
+			<li><a href="{{ url_for('habits') }}">Habits</a></li>
+			<li><a href="{{ url_for('moods') }}">Moods</a></li>
+			<li><a href="{{ url_for('journal') }}">Journals</a></li>
+		</nav>
 
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
