@@ -2,18 +2,22 @@
 <html>
     <head>
         <title>Digital Bullet Journal</title>
+        <h1><a href="{{ url_for('home') }}">Digital Bullet Journal :D</a></h1>
+		<a href="{{ url_for('register') }}"><p align="right">Register</p></a>
+        <a href="{{ url_for('login') }}"><p align="right">Login</p></a>
     </head>
 
     <body>
-		<nav>
+        <nav>
 			<!--TODO make Calendar, Habits, Moods, Journals pages and substitute here-->
-			<h1><a href="{{ url_for('home') }}">Digital Bullet Journal :D</a></h1>
-			<li><a href="{{ url_for('home') }}">Calendar</a></li>
-			<li><a href="{{ url_for('home') }}">Habits</a></li>
-			<li><a href="{{ url_for('home') }}">Moods</a></li>
-			<li><a href="{{ url_for('home') }}">Journals</a></li>
+			<a href="{{ url_for('calendar') }}">Calendar</a>
+			<a href="{{ url_for('habits') }}">Habits</a>
+			<a href="{{ url_for('moods') }}">Moods</a>
+			<a href="{{ url_for('journal') }}">Journals</a>
 		</nav>
 
+
+        <p><br</p>
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
