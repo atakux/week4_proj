@@ -47,6 +47,26 @@ def home():
     return render_template('home.html', subtitle='Home', text='this the home page')
 
 
+@app.route("/calendar")
+def calendar():
+    return render_template('calendar.html')
+
+
+@app.route("/habits")
+def habits():
+    return render_template('habits.html')
+
+
+@app.route("/moods")
+def moods():
+    return render_template('moods.html')
+
+
+@app.route("/journal")
+def journal():
+    return render_template('journal.html')
+
+
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
