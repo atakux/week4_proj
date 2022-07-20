@@ -19,7 +19,9 @@
 """
 
 from registration import RegistrationForm
-from flask import Flask, render_template, url_for, flash, redirect
+from login import LoginForm
+
+from flask import Flask, render_template, url_for, flash, redirect, session
 from flask_behind_proxy import FlaskBehindProxy
 from flask_sqlalchemy import SQLAlchemy
 
@@ -81,10 +83,16 @@ def register():
     return render_template('register.html', title='Sign Up', form=form)
 
 
-@app.route("/login")
+@app.route("/login", methods=['GET', 'POST'])
 def login():
-    return render_template('login.html')
-
+    form = LoginForm()
+    if form.validate_on_submit():
+        if form.username.data in session:
+            flash(f"welcome {form.username.data}!", 'success')
+            return render_template('profile.html')
+        else:
+            flash("incorrect username or password", 'failure')
+    return render_template('login.html', form=form)
 
 
 if __name__ == '__main__':
