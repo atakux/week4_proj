@@ -20,7 +20,7 @@
 
 from forms import RegistrationForm, LoginForm
 
-from flask import Flask, render_template, url_for, flash, redirect, session
+from flask import Flask, render_template, url_for, flash, redirect, session, g
 from flask_behind_proxy import FlaskBehindProxy
 from flask_sqlalchemy import SQLAlchemy
 
@@ -44,6 +44,9 @@ class User(db.Model):
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"
+    
+    def get_id(self):
+        return self.id
 
     def get_username(self):
         return self.username
@@ -111,7 +114,7 @@ def register():
         db.session.commit()
 
         flash(f'Digital Bullet Journal account created for {form.username.data}!!', 'success')
-        return redirect(url_for('home'))
+        return redirect(url_for('login'))
     return render_template('register.html', title='Sign Up', form=form)
 
 
@@ -126,11 +129,21 @@ def login():
         elif actual_user.get_username() == form.username.data and \
                 actual_user.get_password() == form.password.data:
             flash(f"welcome {actual_user.get_username()}!", 'success')
-            return render_template('profile.html')
+            session.clear()
+            session['user_id'] = actual_user.get_id()
+            return redirect(url_for('home'))
         else:
             flash("incorrect username or password", 'failure')
     return render_template('login.html', form=form)
 
+
+@app.before_request
+def load_user():
+    user_id = session.get('user_id')
+    if user_id is None:
+        g.user = None
+    else:
+        g.user = User.query.filter_by(id=user_id).first()
 
 if __name__ == '__main__':
     db.create_all()
