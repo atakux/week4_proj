@@ -39,6 +39,9 @@ class User(db.Model):
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
+    journals = db.relationship('Journal', backref='user', lazy=True)
+    moods = db.relationship('Mood', backref='user', lazy=True)
+    habits = db.relationship('Habit', backref='user', lazy=True)
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"
@@ -48,6 +51,25 @@ class User(db.Model):
 
     def get_password(self):
         return self.password
+
+class Journal(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.Date)
+    entry = db.Column(db.Text)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+class Mood(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.Date, unique=True, nullable=False)
+    mood = db.Column(db.String(20), unique=False, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+class Habit(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    date_created = db.Column(db.Date, unique=False, nullable=False)
+    description = db.Column(db.String(50), unique=True, nullable=False)
+    # TODO Implement frequency column. What should the type be?
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 
 @app.route("/")
