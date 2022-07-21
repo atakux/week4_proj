@@ -18,8 +18,7 @@
                 - allow user to set long term goals besides regular habits ?
 """
 
-from registration import RegistrationForm
-from login import LoginForm
+from forms import RegistrationForm, LoginForm
 
 from flask import Flask, render_template, url_for, flash, redirect, session
 from flask_behind_proxy import FlaskBehindProxy
