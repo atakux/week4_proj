@@ -114,7 +114,7 @@ def register():
         db.session.commit()
 
         flash(f'Digital Bullet Journal account created for {form.username.data}!!', 'success')
-        return redirect(url_for('login'))
+        return redirect(url_for('home'))
     return render_template('register.html', title='Sign Up', form=form)
 
 
