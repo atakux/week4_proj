@@ -1,9 +1,14 @@
 {% extends "layout.html" %}
 {% block content %}
+
+
+
     <div class="content-section">
         <form method="POST" action="">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
+
+              <h1> Register </h1>
 
               <div class="form-group">
                   {{ form.username.label(class="form-control-label") }}
@@ -18,6 +23,7 @@
                     {{ form.username(class="form-control form-control-lg") }}
                 {% endif %}
               </div>
+
 
 
              <div class="form-group">
@@ -70,3 +76,6 @@
          </form>
      </div>
  {% endblock content %}
+
+
+
