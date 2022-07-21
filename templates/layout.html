@@ -38,24 +38,6 @@
     </ul>
   </div>
 </nav>
-
-		<!-- <nav>
-			TODO make Calendar, Habits, Moods, Journals pages and substitute here
-            
-            
-
-            <ul class="nav navbar-nav d-inline-block">
-
-                <h1><a href="{{ url_for('home') }}">Digital Bullet Journal :D</a></h1>
-                <li class="nav-item"><a class="nav-link active" href="{{ url_for('home') }}">Calendar</a></li>
-                <li class="nav-item"><a class="nav-link active" href="{{ url_for('home') }}">Habits</a></li>
-                <li class="nav-item"><a class="nav-link active" href="{{ url_for('home') }}">Moods</a></li>
-                <li class="nav-item"><a class="nav-link active" href="{{ url_for('home') }}">Journals</a></li>
-
-            </ul>
-            
-		</nav> -->
-
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
