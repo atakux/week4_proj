@@ -44,7 +44,6 @@ class User(db.Model):
 
 @app.route("/")
 def home():
-    #return render_template('home.html', subtitle='Home', text='this the home page')
     return render_template('home.html')
 
 
