@@ -81,7 +81,8 @@ def landing():
 
 @app.route("/home")
 def home():
-    return render_template('home.html', subtitle='Home', text='this the home page')
+    #return render_template('home.html', subtitle='Home', text='this the home page')
+    return render_template('home.html')
 
 
 @app.route("/calendar")
