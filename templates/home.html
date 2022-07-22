@@ -1,4 +1,4 @@
-`{% extends "layout.html" %}
+{% extends "layout.html" %}
 {% block content %}
 
 <h1> Dashboard </h1>
@@ -23,19 +23,50 @@
 
 <!-- THE FIRST CARD THAT CONTAINS THE HABIT TRACKER -->
 <div class="row">
-  <div class="col-sm-6">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">Don't forget to ...</h5>
-        <p class="card-text">The 1st habit to track.</p>
-        <p class="card-text">The 2nd habit to track.</p>
-        <p class="card-text">The 3rd habit to track.</p>
-        <p class="card-text">The 4th habit to track.</p>
-        <p class="card-text">The 5th habit to track.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
-      </div>
+    <div class="col-sm-7">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Don't forget to ...</h5>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <p class="card-text">The 1st habit to track.</p>
+                                <p class="card-text">The 2nd habit to track.</p>
+                                <p class="card-text">The 3rd habit to track.</p>
+                                <p class="card-text">The 4th habit to track.</p>
+                                <p class="card-text">The 5th habit to track.</p>
+                            </div>
+                            <div class="col-sm">
+                                <p class="card-text"> !!!</p>
+                                <p class="card-text"> !!!</p>
+                                <p class="card-text"> !</p>
+                                <p class="card-text"> !!</p>
+                                <p class="card-text"> !</p>
+                            </div>
+                            <div class="col-sm">
+                                <p class="card-text"><form>
+                                    <div><label><input type="checkbox" /> Done?</label></div>
+                                </form></p>
+                                <p class="card-text"><form>
+                                    <div><label><input type="checkbox" /> Done?</label></div>
+                                </form></p>
+                                <p class="card-text"><form>
+                                    <div><label><input type="checkbox" /> Done?</label></div>
+                                </form></p>
+                                <p class="card-text"><form>
+                                    <div><label><input type="checkbox" /> Done?</label></div>
+                                </form></p>
+                                <p class="card-text"><form>
+                                    <div><label><input type="checkbox" /> Done?</label></div>
+                                </form></p>
+                                <!-- The Button to submit -->
+                                <p> <a href="#" class="btn btn-primary">Submit</a> </p>
+                            </div>
+                    </div>
+            </div>
+        </div>
     </div>
-  </div>
+</div>
 <!-- THE SECOND CARD THAT CONTAINS THE JOURNAL -->
   <div class="col-sm-4">
     <div class="card">
@@ -52,11 +83,10 @@
 <!-- THE FINAL CARD THAT CONTAINS THE MOOD TRACKER -->
 <div class="row">
 
-    <div class="col-sm-6">
+    <div class="col-sm-7">
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">How are you feeling?</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
 
     <button type="button" class="btn btn-primary btn-circle btn-xl">Happy</button>
     <button type="button" class="btn btn-secondary btn-circle btn-xl">Excited</button>
@@ -72,5 +102,3 @@
 
 
 {% endblock content %}
-
-
