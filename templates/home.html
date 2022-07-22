@@ -21,79 +21,97 @@
         }
 </style>
 
-<!-- THE FIRST CARD THAT CONTAINS THE HABIT TRACKER -->
+
 <div class="row">
-    <div class="col-sm-7">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Don't forget to ...</h5>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-5">
-                                <p class="card-text">The 1st habit to track.</p>
-                                <p class="card-text">The 2nd habit to track.</p>
-                                <p class="card-text">The 3rd habit to track.</p>
-                                <p class="card-text">The 4th habit to track.</p>
-                                <p class="card-text">The 5th habit to track.</p>
-                            </div>
-                            <div class="col-sm">
-                                <p class="card-text"> !!!</p>
-                                <p class="card-text"> !!!</p>
-                                <p class="card-text"> !</p>
-                                <p class="card-text"> !!</p>
-                                <p class="card-text"> !</p>
-                            </div>
-                            <div class="col-sm">
-                                <p class="card-text"><form>
-                                    <div><label><input type="checkbox" /> Done?</label></div>
-                                </form></p>
-                                <p class="card-text"><form>
-                                    <div><label><input type="checkbox" /> Done?</label></div>
-                                </form></p>
-                                <p class="card-text"><form>
-                                    <div><label><input type="checkbox" /> Done?</label></div>
-                                </form></p>
-                                <p class="card-text"><form>
-                                    <div><label><input type="checkbox" /> Done?</label></div>
-                                </form></p>
-                                <p class="card-text"><form>
-                                    <div><label><input type="checkbox" /> Done?</label></div>
-                                </form></p>
-                                <!-- The Button to submit -->
-                                <p> <a href="#" class="btn btn-primary">Submit</a> </p>
-                            </div>
-                    </div>
+  <!-- THE FIRST CARD THAT CONTAINS THE HABIT TRACKER -->
+  <div class="col-sm-7">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Don't forget to ...</h5>
+        {% if habits %}
+        <div class="container">
+          {% for habit in habits %}
+          <div class="row">
+            <div class="col-md-5">
+              <p class="card-text">{{ habit.description }}</p>
             </div>
+            <div class="col-sm">
+                <p class="card-text">{{'!' * habit.importance }}</p>
+            </div>
+            <div class="col-sm">
+              <p class="card-text"><form>
+                <div><label><input type="checkbox" /> Done?</label></div>
+              </form></p>
+            </div>
+          </div>
+          {% endfor %}
+          <!-- The Button to submit -->
+          <p> <a href="#" class="btn btn-primary">Submit</a> </p>
         </div>
+        {% else %}
+        <p class="card-text">No more habits for today!</p>
+        {% endif %}
+      </div>
     </div>
-</div>
-<!-- THE SECOND CARD THAT CONTAINS THE JOURNAL -->
+  </div>
+
+  <!-- THE SECOND CARD THAT CONTAINS THE JOURNAL -->
   <div class="col-sm-4">
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">Journal</h5>
+        {% if journal_form %}
         <p class="card-text">Pour your feelings out here (´･ω･`)</p>
-        <textarea ></textarea>
-         <p> <a href="#" class="btn btn-primary">Submit</a> </p>
+        <form method="POST" action="{{ url_for('journal_submit') }}">
+          {{ journal_form.hidden_tag() }}
+          <fieldset class="form-group">
+            <div class="form-group">
+              {% if journal_form.entry.errors %}
+                {{ journal_form.entry(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                  {% for error in journal_form.entry.errors %}
+                    <span>{{ error }}</span>
+                  {% endfor %}
+                </div>
+              {% else %}
+                {{ journal_form.entry(class="form-control form-control-lg") }}
+              {% endif %}
+            </div>
+          </fieldset>
+          <div class="form-group">
+            {{ journal_form.submit(class="btn btn-primary") }}
+          </div>
+        </form>
+        {% else %}
+        <p class="card-text">Journal already written for today!</p>
+        {% endif %}
       </div>
     </div>
   </div>
+
 </div>
 
 <!-- THE FINAL CARD THAT CONTAINS THE MOOD TRACKER -->
 <div class="row">
 
-    <div class="col-sm-7">
+  <div class="col-sm-7">
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">How are you feeling?</h5>
-
-    <button type="button" class="btn btn-primary btn-circle btn-xl">Happy</button>
-    <button type="button" class="btn btn-secondary btn-circle btn-xl">Excited</button>
-    <button type="button" class="btn btn-success btn-circle btn-xl">Sad</button>
-    <button type="button" class="btn btn-danger btn-circle btn-xl">Angry</button>
-    <button type="button" class="btn btn-warning btn-circle btn-xl">Scared</button>
-
+        {% if mood_form %}
+        <form method="POST" action="{{ url_for('mood_submit') }}">
+          {{ mood_form.hidden_tag() }}
+          <div class="form-group">
+            {{ mood_form.happy(class="btn btn-primary btn-circle btn-xl") }}
+            {{ mood_form.excited(class="btn btn-secondary btn-circle btn-xl") }}
+            {{ mood_form.sad(class="btn btn-success btn-circle btn-xl") }}
+            {{ mood_form.angry(class="btn btn-danger btn-circle btn-xl") }}
+            {{ mood_form.scared(class="btn btn-warning btn-circle btn-xl") }}
+          </div>
+        </form>
+        {% else %}
+        <p class="card-text">Mood already chosen for today!</p>
+        {% endif %}
       </div>
     </div>
   </div>
