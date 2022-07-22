@@ -18,9 +18,9 @@
                 - allow user to set long term goals besides regular habits ?
 """
 
-from forms import AddHabitForm, RegistrationForm, LoginForm
+from forms import AddHabitForm, JournalForm, RegistrationForm, LoginForm
 
-from flask import Flask, render_template, url_for, flash, redirect, session, g
+from flask import Flask, render_template, url_for, flash, redirect, session, g, request
 from flask_behind_proxy import FlaskBehindProxy
 from flask_sqlalchemy import SQLAlchemy
 
@@ -60,9 +60,12 @@ class User(db.Model):
 
 class Journal(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.Date)
+    date = db.Column(db.Date, unique=True)
     entry = db.Column(db.Text)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    def __repr__(self):
+        return f"Journal({self.date}, {self.entry[:20]})"
 
 class Mood(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -74,10 +77,6 @@ class Habit(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(50), unique=True, nullable=False)
     importance = db.Column(db.Integer)
-    days_missed = db.Column(db.Integer, nullable=False)
-    days_done = db.Column(db.Integer, nullable=False)
-    day_last_updated = db.Column(db.Date)
-    success_rate = db.Column(db.Numeric)
     sunday = db.Column(db.Boolean)
     monday = db.Column(db.Boolean)
     tuesday = db.Column(db.Boolean)
@@ -105,11 +104,45 @@ def landing():
     return render_template('index.html', g=g)
 
 
-@app.route("/home")
+def get_todays_habits():
+    today = date.today().weekday()
+    habits = []
+    if today == 0:
+        habits = Habit.query.filter(Habit.monday == True).all()
+    elif today == 1:
+        habits = Habit.query.filter(Habit.tuesday == True).all()
+    elif today == 2:
+        habits = Habit.query.filter(Habit.wednesday == True).all()
+    elif today == 3:
+        habits = Habit.query.filter(Habit.thursday == True).all()
+    elif today == 4:
+        habits = Habit.query.filter(Habit.friday == True).all()
+    elif today == 5:
+        habits = Habit.query.filter(Habit.saturday == True).all()
+    elif today == 6:
+        habits = Habit.query.filter(Habit.sunday == True).all()
+    return habits
+
+
+@app.route("/home", methods=["GET", "POST"])
 @login_required
 def home():
-    #return render_template('home.html', subtitle='Home', text='this the home page')
-    return render_template('home.html')
+    habits = get_todays_habits()
+    already_wrote_journal = Journal.query.filter_by(date=date.today()).first()
+    journal_form = JournalForm()
+    if already_wrote_journal:
+        journal_form = None
+    elif journal_form.validate_on_submit():
+        journal = Journal(entry=journal_form.entry.data,
+                          date=date.today(),
+                          user_id=g.user.id)
+        db.session.add(journal)
+        db.session.commit()
+        return redirect(url_for('home'))
+    
+    
+
+    return render_template('home.html', habits=habits, journal_form=journal_form)
 
 @app.route("/calendar")
 @login_required
@@ -139,7 +172,9 @@ def journal():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data, password=form.password.data)
+        user = User(username=form.username.data,
+                    email=form.email.data,
+                    password=form.password.data)
 
         db.session.add(user)
         db.session.commit()
@@ -178,25 +213,22 @@ def add_habit():
     form = AddHabitForm()
     if form.validate_on_submit():
         sun = mon = tues = wed = thurs = fri = sat = False
-        if 'sun' in form.data.get('days'):
+        if 'sun' in form.days.data:
             sun = True
-        if 'mon' in form.data.get('days'):
+        if 'mon' in form.days.data:
             mon = True
-        if 'tues' in form.data.get('days'):
+        if 'tues' in form.days.data:
             tues = True
-        if 'wed' in form.data.get('days'):
+        if 'wed' in form.days.data:
             wed = True
-        if 'thurs' in form.data.get('days'):
+        if 'thurs' in form.days.data:
             thurs = True
-        if 'fri' in form.data.get('days'):
+        if 'fri' in form.days.data:
             fri = True
-        if 'sat' in form.data.get('days'):
+        if 'sat' in form.days.data:
             sat = True
         habit = Habit(description=form.data.get('description'),
                       importance=form.data.get('importance'),
-                      days_missed=0,
-                      days_done=0,
-                      day_last_updated=date.today(),
                       sunday=sun,
                       monday=mon,
                       tuesday=tues,
@@ -219,6 +251,9 @@ def load_user():
         g.user = None
     else:
         g.user = User.query.filter_by(id=user_id).first()
+  
+
+
 
 if __name__ == '__main__':
     db.create_all()

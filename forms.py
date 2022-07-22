@@ -21,7 +21,7 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField('Sign Up')
 
 class JournalForm(FlaskForm):
-    text = TextAreaField(validators=[DataRequired()])
+    entry = TextAreaField(validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 class AddHabitForm(FlaskForm):
