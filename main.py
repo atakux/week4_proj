@@ -25,6 +25,8 @@ from flask_behind_proxy import FlaskBehindProxy
 from flask_sqlalchemy import SQLAlchemy
 
 import functools
+from datetime import date
+
 
 app = Flask(__name__)
 
@@ -72,6 +74,9 @@ class Habit(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(50), unique=True, nullable=False)
     importance = db.Column(db.Integer)
+    days_missed = db.Column(db.Integer, nullable=False)
+    days_done = db.Column(db.Integer, nullable=False)
+    day_last_updated = db.Column(db.Date)
     success_rate = db.Column(db.Numeric)
     sunday = db.Column(db.Boolean)
     monday = db.Column(db.Boolean)
@@ -92,35 +97,40 @@ def login_required(view):
             return redirect(url_for('login'))
         
         return view(**kwargs)
+    
+    return wrapped_view
 
 @app.route("/")
 def landing():
     return render_template('index.html', g=g)
 
-@login_required
+
 @app.route("/home")
+@login_required
 def home():
     #return render_template('home.html', subtitle='Home', text='this the home page')
     return render_template('home.html')
 
-@login_required
 @app.route("/calendar")
+@login_required
 def calendar():
     return render_template('calendar.html')
 
-@login_required
 @app.route("/habits")
+@login_required
 def habits():
     data = Habit.query.filter_by(user_id=g.user.id).all()
     return render_template('habits.html', data=data)
 
-@login_required
+
 @app.route("/moods")
+@login_required
 def moods():
     return render_template('moods.html')
 
-@login_required
+
 @app.route("/journal")
+@login_required
 def journal():
     return render_template('journal.html')
 
@@ -184,6 +194,9 @@ def add_habit():
             sat = True
         habit = Habit(description=form.data.get('description'),
                       importance=form.data.get('importance'),
+                      days_missed=0,
+                      days_done=0,
+                      day_last_updated=date.today(),
                       sunday=sun,
                       monday=mon,
                       tuesday=tues,
