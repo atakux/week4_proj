@@ -1,5 +1,74 @@
-`{% extends "layout.html" %}
+{% extends "layout.html" %}
 {% block content %}
-    <h2>{{ subtitle }}</h2>
-    <p>{{ text }}</p>
+
+<h1> Dashboard </h1>
+
+<!-- THIS STYLESHEET GETS OUR BUTTONS TO BE IN A CIRCLE -->
+<style type="text/css">
+        .xyz {
+            background-size: auto;
+            text-align: center;
+            padding-top: 100px;
+        }
+        
+        .btn-circle.btn-xl {
+            width: 76px;
+            height: 70px;
+            padding: 10px 16px;
+            border-radius: 35px;
+            font-size: 12px;
+            text-align: center;
+        }
+</style>
+
+<!-- THE FIRST CARD THAT CONTAINS THE HABIT TRACKER -->
+<div class="row">
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Don't forget to ...</h5>
+        <p class="card-text">The 1st habit to track.</p>
+        <p class="card-text">The 2nd habit to track.</p>
+        <p class="card-text">The 3rd habit to track.</p>
+        <p class="card-text">The 4th habit to track.</p>
+        <p class="card-text">The 5th habit to track.</p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+      </div>
+    </div>
+  </div>
+<!-- THE SECOND CARD THAT CONTAINS THE JOURNAL -->
+  <div class="col-sm-4">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Journal</h5>
+        <p class="card-text">Pour your feelings out here (´･ω･`)</p>
+        <textarea ></textarea>
+         <p> <a href="#" class="btn btn-primary">Submit</a> </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- THE FINAL CARD THAT CONTAINS THE MOOD TRACKER -->
+<div class="row">
+
+    <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">How are you feeling?</h5>
+        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+
+    <button type="button" class="btn btn-primary btn-circle btn-xl">Happy</button>
+    <button type="button" class="btn btn-secondary btn-circle btn-xl">Excited</button>
+    <button type="button" class="btn btn-success btn-circle btn-xl">Sad</button>
+    <button type="button" class="btn btn-danger btn-circle btn-xl">Angry</button>
+    <button type="button" class="btn btn-warning btn-circle btn-xl">Scared</button>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
 {% endblock content %}
