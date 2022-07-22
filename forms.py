@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
-from wtforms.validators import DataRequired, Length, Email, EqualTo
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, SelectField, SelectMultipleField
+from wtforms.validators import DataRequired, InputRequired, Length, Email, EqualTo
+from wtforms.widgets import ListWidget, CheckboxInput
 
 
 class LoginForm(FlaskForm):
@@ -22,3 +23,24 @@ class RegistrationForm(FlaskForm):
 class JournalForm(FlaskForm):
     text = TextAreaField(validators=[DataRequired()])
     submit = SubmitField('Submit')
+
+class AddHabitForm(FlaskForm):
+    description = StringField('Habit', validators=[DataRequired(), Length(min=2, max=50)])
+    importance = SelectField('Importance', choices=[
+        (0, 'None'), (1, '!'), (2, '!!'), (3, '!!!')
+    ],
+    coerce=int)
+    days = SelectMultipleField('Days',
+                               validators=[],
+                               widget=ListWidget(prefix_label=False),
+                               option_widget=CheckboxInput(),
+                               choices=[
+                                ('sun', 'Sunday'),
+                                ('mon', 'Monday'),
+                                ('tues', 'Tuesday'),
+                                ('wed', 'Wednesday'),
+                                ('thurs', 'Thursday'),
+                                ('fri', 'Friday'),
+                                ('sat', 'Saturday')
+                               ])
+    submit = SubmitField('Add Habit')

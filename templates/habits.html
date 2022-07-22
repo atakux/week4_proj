@@ -1,5 +1,12 @@
 {% extends "layout.html" %}
 {% block content %}
     <h2>Habits</h2>
-    <p>this the habits</p>
+    {% for habit in data %}
+        <p>{{ habit }}</p>
+    {% endfor %}
+    <a href="{{ url_for('add_habit') }}">
+        <button type="button">
+            &#43;
+        </button>
+    </a>
 {% endblock content %}
