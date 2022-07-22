@@ -30,9 +30,11 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-md-5">
-                                {% for habit in habits %}
-                                <p class="card-text">{{ habit.description }}</p>
-                                {% endfor %}
+                                <p class="card-text">The 1st habit to track.</p>
+                                <p class="card-text">The 2nd habit to track.</p>
+                                <p class="card-text">The 3rd habit to track.</p>
+                                <p class="card-text">The 4th habit to track.</p>
+                                <p class="card-text">The 5th habit to track.</p>
                             </div>
                             <div class="col-sm">
                                 <p class="card-text"> !!!</p>
@@ -65,39 +67,14 @@
         </div>
     </div>
 </div>
-
 <!-- THE SECOND CARD THAT CONTAINS THE JOURNAL -->
   <div class="col-sm-4">
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">Journal</h5>
-        {% if journal_form %}
         <p class="card-text">Pour your feelings out here (´･ω･`)</p>
-
-        <form method="POST" action="">
-          {{ journal_form.hidden_tag() }}
-          <fieldset class="form-group">
-            <div class="form-group">
-              {% if journal_form.entry.errors %}
-                {{ journal_form.text(class="form-control form-control-lg is-invalid")}}
-                <div class="invalid-feedback">
-                  {% for error in journal_form.entry.errors %}
-                    <span>{{ error }}</span>
-                  {% endfor %}
-                </div>
-              {% else %}
-                {{ journal_form.entry(class="form-control form-control-lg") }}
-              {% endif %}
-            </div>
-          </fieldset>
-        
-          <div class="form-group">
-            {{ journal_form.submit(class="btn btn-outline-info") }}
-          </div>
-        </form>
-        {% else %}
-        <p class="card-text">Journal already written for today!</p>
-        {% endif %}
+        <textarea ></textarea>
+         <p> <a href="#" class="btn btn-primary">Submit</a> </p>
       </div>
     </div>
   </div>
