@@ -1,3 +1,4 @@
+from http.client import EXPECTATION_FAILED
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, SelectField, SelectMultipleField
 from wtforms.validators import DataRequired, InputRequired, Length, Email, EqualTo
@@ -21,7 +22,7 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField('Sign Up')
 
 class JournalForm(FlaskForm):
-    text = TextAreaField(validators=[DataRequired()])
+    entry = TextAreaField(validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 class AddHabitForm(FlaskForm):
@@ -44,3 +45,10 @@ class AddHabitForm(FlaskForm):
                                 ('sat', 'Saturday')
                                ])
     submit = SubmitField('Add Habit')
+
+class MoodForm(FlaskForm):
+    happy = SubmitField("Happy")
+    excited = SubmitField("Excited")
+    sad = SubmitField("Sad")
+    angry = SubmitField("Angry")
+    scared = SubmitField("Scared")

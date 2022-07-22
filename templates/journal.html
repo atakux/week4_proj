@@ -1,5 +1,37 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h2>Journal</h2>
-    <p>this the journal</p>
+    <h2>Journal Entries</h2>
+
+
+    <table class="table">
+  <thead>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Date</th>
+      <th scope="col">Entry</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+        <td> <input type="checkbox" /> </td>
+      <td>July 22nd, 2022</td> 
+      <td>I love bad bitches thats my fucking problem</td>
+      
+    </tr>
+    <tr>
+        <td> <input type="checkbox" /> </td>
+        <td>July 21st, 2022</td>
+        <td>Today I ate a cheese sandwhich and it was really delicious</td>
+      
+    </tr>
+    <tr>
+        <td> <input type="checkbox" /> </td>
+        <td>July 20th, 2022</td>
+        <td>Do you ever feel like a plastic bag drifting through the wind wanting to start again</td>
+      
+    </tr>
+  </tbody>
+</table>
+
 {% endblock content %}
