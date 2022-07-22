@@ -191,8 +191,8 @@ def calendar():
 @app.route("/habits")
 @login_required
 def habits():
-    data = Habit.query.filter_by(user_id=g.user.id).all()
-    return render_template('habits.html', data=data)
+    habits = Habit.query.filter_by(user_id=g.user.id).all()
+    return render_template('habits.html', habits=habits)
 
 
 @app.route("/moods")

@@ -19,28 +19,23 @@
             <th scope="col">Success Rate</th>
           </tr>
         </thead>
+        {% if habits %}
+        <tbody>
+          {% for habit in habits %}
+          <tr>
+            <td><input type="checkbox"></td>
+            <td>{{ habit.description }}</td>
+            <td>{{ '!' * habit.importance }}</td>
+            <td>100%</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        {% else %}
         <tbody>
           <tr>
-            <td> <input type="checkbox" /> </td>
-            <td>July 22nd, 2022</td> 
-            <td>!!!</td>
-            <td>97%</td>
-            
+            <p>No habits yet.</p>
           </tr>
-          <tr>
-              <td> <input type="checkbox" /> </td>
-              <td>July 21st, 2022</td>
-              <td>!</td>
-              <td>80%</td>
-            
-          </tr>
-          <tr>
-              <td> <input type="checkbox" /> </td>
-              <td>July 20th, 2022</td>
-              <td>!!</td>
-              <td>12%</td>
-          </tr>
-
         </tbody>
+        {% endif %}
       </table>
 {% endblock content %}
