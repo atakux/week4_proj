@@ -236,7 +236,6 @@ def login():
                 actual_user.get_password() == form.password.data:
             flash(f"welcome {actual_user.get_username()}!", 'success')
             session.clear()
-            print('running')
             session['user_id'] = actual_user.get_id()
             return redirect(url_for('home'))
         else:
@@ -288,7 +287,6 @@ def add_habit():
 @app.before_request
 def load_user():
     user_id = session.get('user_id')
-    print(user_id)
     if user_id is None:
         g.user = None
     else:
