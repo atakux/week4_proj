@@ -6,10 +6,18 @@
 
 	<body>
 		<h1>Digital Bullet Journal</h1>
-		<a href="{{ url_for('home') }}">
-			<button>
-				Enter
-			</button>
-		</a>
+		{% if g.user %}
+			<a href="{{ url_for('home') }}">
+				<button>
+					Enter
+				</button>
+			</a>
+		{% else %}
+			<a href="{{ url_for('login') }}">
+				<button>
+					Enter
+				</button>
+			</a>
+		{% endif %}
 	</body>
 </html>

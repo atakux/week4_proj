@@ -95,7 +95,7 @@ def login_required(view):
 
 @app.route("/")
 def landing():
-    return render_template('index.html')
+    return render_template('index.html', g=g)
 
 @login_required
 @app.route("/home")
