@@ -18,7 +18,7 @@
                 - allow user to set long term goals besides regular habits ?
 """
 
-from forms import AddHabitForm, JournalForm, RegistrationForm, LoginForm
+from forms import AddHabitForm, JournalForm, RegistrationForm, LoginForm, MoodForm
 
 from flask import Flask, render_template, url_for, flash, redirect, session, g, request
 from flask_behind_proxy import FlaskBehindProxy
@@ -60,7 +60,7 @@ class User(db.Model):
 
 class Journal(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.Date, unique=True)
+    date = db.Column(db.Date, unique=True, nullable=False)
     entry = db.Column(db.Text)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
@@ -129,20 +129,59 @@ def get_todays_habits():
 def home():
     habits = get_todays_habits()
     already_wrote_journal = Journal.query.filter_by(date=date.today()).first()
-    journal_form = JournalForm()
     if already_wrote_journal:
         journal_form = None
-    elif journal_form.validate_on_submit():
+    else:
+        journal_form = JournalForm()
+    already_logged_mood = Mood.query.filter_by(date=date.today()).first()
+    if already_logged_mood:
+        mood_form = None
+    else:
+        mood_form = MoodForm()
+    return render_template('home.html', habits=habits, journal_form=journal_form, mood_form=mood_form)
+
+@app.route("/home/journal", methods=["POST"])
+@login_required
+def journal_submit():
+    habits = get_todays_habits()
+    journal_form = JournalForm()
+    mood_form = MoodForm()
+    if journal_form.validate_on_submit():
         journal = Journal(entry=journal_form.entry.data,
                           date=date.today(),
                           user_id=g.user.id)
         db.session.add(journal)
         db.session.commit()
         return redirect(url_for('home'))
-    
+    return render_template('home.html', habits=habits, journal_form=journal_form, mood_form=mood_form)
     
 
-    return render_template('home.html', habits=habits, journal_form=journal_form)
+@app.route("/home/mood", methods=["POST"])
+@login_required
+def mood_submit():
+    habits = get_todays_habits()
+    journal_form = JournalForm()
+    mood_form = MoodForm()
+    if mood_form.validate_on_submit():
+        mood = None
+        if mood_form.happy.data:
+            mood = 'happy'
+        elif mood_form.excited.data:
+            mood = 'excited'
+        elif mood_form.sad.data:
+            mood = 'sad'
+        elif mood_form.angry.data:
+            mood = 'angry'
+        elif mood_form.scared.data:
+            mood = 'scared'
+        mood_entry = Mood(date=date.today(),
+                          mood=mood,
+                          user_id = g.user.id)
+        db.session.add(mood_entry)
+        db.session.commit()
+        return redirect(url_for('home'))
+    return render_template('home.html', habits=habits, journal_form=journal_form, mood_form=mood_form)
+
 
 @app.route("/calendar")
 @login_required
