@@ -4,33 +4,30 @@
 
 
 <table class="table">
-<thead>
-<tr>
-  <th scope="col"></th>
-  <th scope="col">Date</th>
-  <th scope="col">Entry</th>
-  <th scope="col"></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-    <td> <input type="checkbox" /> </td>
-  <td>July 22nd, 2022</td> 
-  <td>Happy</td>
-  
-</tr>
-<tr>
-    <td> <input type="checkbox" /> </td>
-    <td>July 21st, 2022</td>
-    <td>Sad</td>
-  
-</tr>
-<tr>
-    <td> <input type="checkbox" /> </td>
-    <td>July 20th, 2022</td>
-    <td>Excited</td>
-  
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Date</th>
+      <th scope="col">Entry</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  {% if moods %}
+  <tbody>
+    {% for mood in moods %}
+    <tr>
+      <td> <input type="checkbox"></td>
+      <td>{{ mood.date.strftime("%b %d, %Y") }}</td> 
+      <td>{{ mood.mood }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  {% else %}
+  <tbody>
+    <tr>
+      <p>No moods yet.</p>
+    </tr>
+  </tbody>
+  {% endif %}
 </table>
 {% endblock content %}

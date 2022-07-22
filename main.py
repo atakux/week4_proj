@@ -165,15 +165,15 @@ def mood_submit():
     if mood_form.validate_on_submit():
         mood = None
         if mood_form.happy.data:
-            mood = 'happy'
+            mood = 'Happy'
         elif mood_form.excited.data:
-            mood = 'excited'
+            mood = 'Excited'
         elif mood_form.sad.data:
-            mood = 'sad'
+            mood = 'Sad'
         elif mood_form.angry.data:
-            mood = 'angry'
+            mood = 'Angry'
         elif mood_form.scared.data:
-            mood = 'scared'
+            mood = 'Scared'
         mood_entry = Mood(date=date.today(),
                           mood=mood,
                           user_id = g.user.id)
@@ -198,7 +198,8 @@ def habits():
 @app.route("/moods")
 @login_required
 def moods():
-    return render_template('moods.html')
+    moods = Mood.query.filter_by(user_id=g.user.id).all()
+    return render_template('moods.html', moods=moods)
 
 
 @app.route("/journal")
@@ -235,6 +236,7 @@ def login():
                 actual_user.get_password() == form.password.data:
             flash(f"welcome {actual_user.get_username()}!", 'success')
             session.clear()
+            print('running')
             session['user_id'] = actual_user.get_id()
             return redirect(url_for('home'))
         else:
@@ -286,6 +288,7 @@ def add_habit():
 @app.before_request
 def load_user():
     user_id = session.get('user_id')
+    print(user_id)
     if user_id is None:
         g.user = None
     else:
