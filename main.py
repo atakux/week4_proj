@@ -205,7 +205,8 @@ def moods():
 @app.route("/journal")
 @login_required
 def journal():
-    return render_template('journal.html')
+    journals = Journal.query.filter_by(user_id=g.user.id).all()
+    return render_template('journal.html', journals=journals)
 
 
 @app.route("/register", methods=['GET', 'POST'])

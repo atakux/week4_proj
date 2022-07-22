@@ -1,7 +1,7 @@
 from http.client import EXPECTATION_FAILED
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, SelectField, SelectMultipleField
-from wtforms.validators import DataRequired, InputRequired, Length, Email, EqualTo
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField, SelectField, SelectMultipleField
+from wtforms.validators import DataRequired, Length, Email, EqualTo
 from wtforms.widgets import ListWidget, CheckboxInput
 
 
@@ -52,3 +52,6 @@ class MoodForm(FlaskForm):
     sad = SubmitField("Sad")
     angry = SubmitField("Angry")
     scared = SubmitField("Scared")
+
+class HabitForm(FlaskForm):
+    submit = SubmitField('Submit')

@@ -12,26 +12,27 @@
       <th scope="col"></th>
     </tr>
   </thead>
+  {% if journals %}
+  <tbody>
+    {% for journal in journals %}
+    <tr>
+      <td> <input type="checkbox" /> </td>
+      <td>{{ journal.date.strftime("%b %d, %Y") }}</td>
+      {% if journal.entry|length > 60 %} 
+      <td>{{ journal.entry[:60] }}&#8230;</td>
+      {% else %}
+      <td>{{ journal.entry }}</td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+  </tbody>
+  {% else %}
   <tbody>
     <tr>
-        <td> <input type="checkbox" /> </td>
-      <td>July 22nd, 2022</td> 
-      <td>I love bad bitches thats my fucking problem</td>
-      
-    </tr>
-    <tr>
-        <td> <input type="checkbox" /> </td>
-        <td>July 21st, 2022</td>
-        <td>Today I ate a cheese sandwhich and it was really delicious</td>
-      
-    </tr>
-    <tr>
-        <td> <input type="checkbox" /> </td>
-        <td>July 20th, 2022</td>
-        <td>Do you ever feel like a plastic bag drifting through the wind wanting to start again</td>
-      
+      <p>No journals yet.</p>
     </tr>
   </tbody>
+  {% endif %}
 </table>
 
 {% endblock content %}

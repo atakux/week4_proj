@@ -37,16 +37,6 @@
           <li class="nav-item active">
             <a class="nav-link" href="{{ url_for('logout') }}">Log Out</p></a>
           </li>
-          <li class="nav-item active">
-            <div id="current_date"></p>
-              <script>
-              date = new Date();
-              year = date.getFullYear();
-              month = date.getMonth() + 1;
-              day = date.getDate();
-              document.getElementById("current_date").innerHTML = month + "/" + day + "/" + year;
-              </script>
-          </li>
           {% else %}
           <li class="nav-item active">
             <a class="nav-link" href="{{ url_for('register') }}">Register<span class="sr-only">(current)</span></a>
@@ -54,7 +44,7 @@
           <li class="nav-item active">
             <a class="nav-link" href="{{ url_for('login') }}">Login<span class="sr-only">(current)</span></a>
           </li>
-
+          {% endif %}
           <li class="nav-item active">
             <div id="current_date"></p>
               <script>
@@ -65,9 +55,6 @@
               document.getElementById("current_date").innerHTML = month + "/" + day + "/" + year;
               </script>
           </li>
-          
-          
-          {% endif %}
         </ul>
       </div>
     </nav>
